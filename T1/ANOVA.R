@@ -13,6 +13,7 @@ library(dplyr)
 # Punto 4
 # Descriptive Statitics
 datos <- read.csv("Desktop/Universidad/6to Semestre/Proba  II/Tareas/T1/Punto 4.csv", header=TRUE, sep=",")
+print(head(datos))
 DS<-describeBy(datos[4],group=datos[3],mat=TRUE,digits = 2)
 print(DS)
 
@@ -53,7 +54,7 @@ SST
 SSE<-SST-SSA
 SSE
 
-# Estad??stico F
+# Estadístico F
 MSA<-(SSA/(4-1))
 MSE<-(SSE/(202-4))
 
@@ -64,27 +65,53 @@ qf(0.95,3,198)
 
 # Anova
 anov<- aov(y[,1]~x[,1])
+summary(anov)
 anov
 
 
 # Means
+h <- DS[1,5] # Mean higher
 b <- DS[2,5] # Mean lower
 mb <- DS[3,5] # Mean lower mid
+um <- DS[4,5] # Mean upper middle
 
 # N data
+n_h <- DS[1,4] # Mean higher
 n_b <- DS[2,4] # Amount lower
 n_mb <- DS[3,4] # Amount lower mid
+n_um <- DS[4,4] # Mean upper middle
 
-# Estad??stico de Prueba
+# Estadístico de Prueba
 t<- (mb-b)/sqrt(MSE*(1/n_mb+1/n_b))
 t  
 
-#Regi??n de rechazo
-qt(0.975,198)
+#Región de rechazo
+rr <- qt(0.975,198+3-2)
+rr
+# Intervalos de confianza
+# Bajo
+ICb1<- b - rr*sqrt(MSE/n_b)
+ICb1
+ICb2<- b + rr*sqrt(MSE/n_b)
+ICb2
 
+# Medio bajo
+ICmb1<- mb - rr*sqrt(MSE/n_mb)
+ICmb1
+ICmb2<- mb + rr*sqrt(MSE/n_mb)
+ICmb2
 
+# Medio alto
+ICum1<- um - rr*sqrt(MSE/n_um)
+ICum1
+ICum2<- um + rr*sqrt(MSE/n_um)
+ICum2
 
-
+# Alto
+ICh1<- h - rr*sqrt(MSE/h)
+ICh1
+ICh2<- h + rr*sqrt(MSE/h)
+ICh2
 
 # Punto 5
 datos2 <- read.csv("Desktop/Universidad/6to Semestre/Proba  II/Tareas/T1/Punto 5.csv", header=TRUE, sep=",")
@@ -126,7 +153,7 @@ plot2
 fit2<-aov(y~franja+ciudad)
 summary(fit2)
 
-# Gr??fico interacci??n
+# Gráfico interacción
 plot3<- ggplot(datos2, aes(x =franja, y = y,colour = ciudad, 
                           group = ciudad)) + geom_point() + geom_line()+theme_bw()+
   scale_y_continuous(name = "Consumo de Combustible",
@@ -145,7 +172,7 @@ plot3<- ggplot(datos2, aes(x =franja, y = y,colour = ciudad,
 
 plot3
 
-# Anova dos factores con interacci??n
+# Anova dos factores con interacción
 fit3<-aov(y~franja*ciudad)
 summary(fit3)
 
