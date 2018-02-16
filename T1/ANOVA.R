@@ -148,3 +148,13 @@ plot3
 # Anova dos factores con interacci??n
 fit3<-aov(y~franja*ciudad)
 summary(fit3)
+
+
+# c
+
+datos3 <- datos2
+head(datos3)
+datos3[,4]=datos3[,4]*1000*3.78/100
+
+fit4<-aov(datos3[,4]~franja*ciudad)
+summary(fit4)
