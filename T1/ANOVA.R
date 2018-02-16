@@ -101,6 +101,7 @@ franja
 ciudad<-as.factor(datos2[,3])
 ciudad
 
+# Box plot dos factores
 plot2 <- ggplot(datos2, aes(x =franja, y = y,fill=ciudad )) +
   geom_boxplot()+
   scale_y_continuous(name = "Consumo de Combustible",
@@ -119,3 +120,31 @@ plot2 <- ggplot(datos2, aes(x =franja, y = y,fill=ciudad )) +
         axis.line = element_line(size=0.5, colour = "black"))
 
 plot2
+
+
+# Anova 2 factores
+fit2<-aov(y~franja+ciudad)
+summary(fit2)
+
+# Gr??fico interacci??n
+plot3<- ggplot(datos2, aes(x =franja, y = y,colour = ciudad, 
+                          group = ciudad)) + geom_point() + geom_line()+theme_bw()+
+  scale_y_continuous(name = "Consumo de Combustible",
+                     breaks = seq(50, 100, 5),
+                     limits=c(50, 100))+
+  theme(panel.grid.major = element_line(colour = "#d3d3d3"),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        plot.title = element_text(size = 18, family = "Tahoma", face ="bold"),
+        text=element_text(family = "Tahoma"),
+        axis.title = element_text(face="bold"),
+        axis.text.x = element_text(colour="black", size = 13),
+        axis.text.y = element_text(colour="black", size = 11),
+        axis.line = element_line(size=0.5, colour = "black"))
+
+plot3
+
+# Anova dos factores con interacci??n
+fit3<-aov(y~franja*ciudad)
+summary(fit3)
