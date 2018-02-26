@@ -10,6 +10,40 @@ library(RColorBrewer)
 library(tidyverse)
 library(dplyr)
 
+# Punto 1c
+# Descriptive Statistics
+paletas <- read.csv("Desktop/Universidad/6to Semestre/Proba  II/Tareas/T2/Paletas.csv", header=TRUE, sep=",")
+print(head(paletas))
+DSp<-describeBy(paletas[2],group=paletas[1], mat=TRUE, digits= 2)
+print(DSp)
+
+# Box plot
+xp=paletas[,1]
+yp=paletas[,2]
+
+fill <- "#4271AE"
+lines <- "#1F3552"
+plot1 <- ggplot(paletas, aes(x = xp, y = yp)) +
+  geom_boxplot(colour = lines,fill=fill,size=1) +
+  scale_y_continuous(name = "Peso",
+                     breaks = seq(180, 400, 10),
+                     limits=c(180,400)) +
+  scale_x_discrete(name = "Proveedor") +
+  ggtitle("Proveedor Vs Peso") +
+  theme_bw() +
+  theme(panel.grid.major = element_line(colour = "#d3d3d3"),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank(),
+        plot.title = element_text(size = 18, family = "Tahoma", face ="bold"),
+        text=element_text(family = "Tahoma"),
+        axis.title = element_text(face="bold"),
+        axis.text.x = element_text(colour="black", size = 12),
+        axis.text.y = element_text(colour="black", size = 12),
+        axis.line = element_line(size=0.5, colour = "black"))
+
+plot1
+
 
 # Punto 4
 # Descriptive Statistics
@@ -64,3 +98,15 @@ print(DS)
 anov<- aov(datos2[,2]~datos2[,1])
 summary(anov)
 anov
+datos[,2 ]
+
+# Normality test
+dep<-c(datos2[,2])
+fact<-c(datos2[,1])
+shapiro.test(dep)
+shapiro.test(fact)
+
+# Independence test
+tbl <- table(fact,dep)
+tbl
+chisq.test(tbl)

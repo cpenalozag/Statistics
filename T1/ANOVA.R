@@ -17,7 +17,6 @@ print(head(datos))
 DS<-describeBy(datos[4],group=datos[3],mat=TRUE,digits = 2)
 print(DS)
 
-
 # Box plot
 x=datos[3]
 y=datos[4]
