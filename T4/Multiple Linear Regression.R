@@ -48,8 +48,6 @@ op2<-matrix(c(0,0,220,2.20,0,1,0,0,2.20),1)
 #Comparación
 K<-op1-op2
 K
-K2<-op2-op1
-K2
 library(multcomp)
 #EP
 t<-glht(reducedModel,linfct=K)
