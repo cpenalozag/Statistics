@@ -53,24 +53,39 @@ numPaisesBCMod <- caret::BoxCoxTrans(data1$`Numero de paises`)
 gastoBCMod <- caret::BoxCoxTrans(data1$Gasto)
 
 data1corrected <- cbind(data1, `Gasto Financiero n`=predict(gastoFinBCMod, data1$`Gasto Financiero`)) # append the transformed variable
-data1corrected <- cbind(data1corrected,  `Puntaje Contaminacion n`=predict(puntajeContBCMod, data1$`Puntaje Contaminacion`)) # append the transformed variable
+data1corrected <- cbind(data1,  `Puntaje Contaminacion n`=predict(puntajeContBCMod, data1$`Puntaje Contaminacion`)) # append the transformed variable
 data1corrected <- cbind(data1corrected, `Numero de paises n`=predict(numPaisesBCMod, data1$`Numero de paises`)) # append the transformed variable
 
-data1corrected <- cbind(data1, `Gasto nuevo`=predict(gastoBCMod, data1$Gasto)) # append the transformed variable
+data1corrected <- cbind(data1corrected, `Gasto nuevo`=predict(gastoBCMod, data1$Gasto)) # append the transformed variable
 
-correctedModel<-lm(`Gasto nuevo`~.-Empresa-Gasto,data=data1corrected)
+head(data1corrected)
+
+correctedModel<-lm(`Gasto nuevo`~Ingresos+`Gasto Financiero n`+`Calificacion Financiera`+`Valor Empresa`+`Puntaje Contaminacion n`+`Numero de paises n`,data=data1corrected)
 summary(correctedModel)
 bptest(correctedModel)
 
+
+
+cModel<-lm(Gasto~.-Empresa-`Puntaje Contaminacion`,data=data1)
+
+
+
+bptest(cModel)
+
 #Correción 
-data1correccion<-data1/((data1$`Gasto Financiero`*data1$`Puntaje Contaminacion`*data1$`Numero de paises`)^1/2)
-data1correccion<-data1correccion/((data1$`Puntaje Contaminacion`)^1/2)
-data1correccion<-data1correccion/((data1$`Numero de paises`)^1/2)
+data1correccion<-data1/((data1$`Puntaje Contaminacion`)^1/2)
+# (data1$`Gasto Financiero`)^1/2 * (data1$`Puntaje Contaminacion`)^1/2)*((data1$`Numero de paises`)^1/2)
+
+head(data1correccion)
 
 reg<-lm(Gasto~.-Empresa,data=data1correccion) 
-summary(reg)
 bptest(reg)
+summary(reg)
+reg1<-lm(Gasto~.-Empresa-`Puntaje Contaminacion`,data=data1correccion) 
+summary(reg1)
+bptest(reg1)
 
+vif(reg)
 
 # PUNTO 6
 
